@@ -3423,7 +3423,7 @@ function startBoardroomMeeting(){
   el('incoming-call').classList.add('show');
   // Ring sound using Web Speech
   if('speechSynthesis' in window){
-    const r=new SpeechSynthesisUtterance(caller.name+' is calling.');
+    const r = new SpeechSynthesisUtterance('Investor pitch challenge starting. Prepare your strategy.');
     r.volume=0.7;r.rate=0.9;window.speechSynthesis.speak(r);
   }
 }
