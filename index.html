@@ -4145,35 +4145,13 @@ initHome();
 requestIdleCallback?requestIdleCallback(buildGlossary):setTimeout(buildGlossary,500);
 
 </script>
-  
-  <div id="screen-trading" class="screen active">
-
-  <div class="trading-layout">
-
-    <div class="chart-section">
-      <h2>TradeSchool Academy — Level 1</h2>
-      <canvas id="tradingChart"></canvas>
-
-      <p id="scenarioText">
-        Price is approaching resistance with strong volume.
-        What is the best decision?
-      </p>
-    </div>
-
-    <div class="side-panel">
-
-      <div class="options">
-        <button class="buy" onclick="choose('buy')">BUY</button>
-        <button class="sell" onclick="choose('sell')">SELL</button>
-        <button class="wait" onclick="choose('wait')">WAIT</button>
-      </div>
-
-      <button class="submit" onclick="submitDecision()">SUBMIT DECISION</button>
-
-    </div>
-
+  <!-- Trade Academy Modal -->
+<div id="tradeAcademy" class="ta-hidden">
+  <div class="ta-box">
+    <button class="ta-close" onclick="closeTradeAcademy()">✖</button>
+    <h2>📈 Trading Academy</h2>
+    <div id="ta-content"></div>
   </div>
-
 </div>
 </body>
 </html>
