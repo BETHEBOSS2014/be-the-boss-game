@@ -8,6 +8,97 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Poppins:wght@400;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <style>
+/* Trade Academy Styles */
+.ta-hidden { display: none !important; }
+
+#tradeAcademy {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.75);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+.ta-box {
+  background: #1e1e2f;
+  color: #fff;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  padding: 25px;
+  position: relative;
+  box-shadow: 0 0 25px rgba(0,255,150,0.3);
+}
+
+.ta-box h2 {
+  margin-top: 0;
+  text-align: center;
+  color: #00e6a8;
+}
+
+.ta-close {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: #ff4757;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px; height: 30px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.ta-level {
+  background: #2a2a40;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ta-level button {
+  background: #00e6a8;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.ta-level button:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+.ta-lesson {
+  background: #2a2a40;
+  padding: 15px;
+  border-radius: 8px;
+  line-height: 1.5;
+}
+
+.ta-quiz button {
+  display: block;
+  width: 100%;
+  margin: 6px 0;
+  padding: 10px;
+  background: #3742fa;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.ta-quiz button:hover { background: #5352ed; }
+</style>
 :root{
   --bg:#080808;--surf:#111111;--s2:#181818;--s3:#1f1f1f;
   --border:#252525;--b2:#333333;
@@ -4153,5 +4244,104 @@ requestIdleCallback?requestIdleCallback(buildGlossary):setTimeout(buildGlossary,
     <div id="ta-content"></div>
   </div>
 </div>
+  <script>
+// Trading Academy Logic
+const tradeLevels = [
+  {
+    title: "Level 1: What is Trading?",
+    lesson: "Trading means buying and selling assets (like stocks, crypto, or currencies) to make profit. You buy LOW and sell HIGH! 📈",
+    question: "What's the goal of trading?",
+    options: ["Buy high, sell low", "Buy low, sell high", "Hold forever"],
+    answer: 1
+  },
+  {
+    title: "Level 2: Risk Management",
+    lesson: "Never invest more than you can lose! Smart traders only risk 1-2% of their money per trade. 🛡️",
+    question: "How much should you risk per trade?",
+    options: ["100% of your money", "50%", "1-2%"],
+    answer: 2
+  },
+  {
+    title: "Level 3: Reading Charts",
+    lesson: "Green candles = price went UP. Red candles = price went DOWN. Patterns help predict future moves! 📊",
+    question: "What does a green candle mean?",
+    options: ["Price dropped", "Price went up", "Market closed"],
+    answer: 1
+  },
+  {
+    title: "Level 4: Diversification",
+    lesson: "Don't put all your eggs in one basket! Spread your money across different assets to lower risk. 🧺",
+    question: "Why diversify?",
+    options: ["To lose money faster", "To reduce risk", "To pay more fees"],
+    answer: 1
+  },
+  {
+    title: "Level 5: Trading Psychology",
+    lesson: "Emotions are your worst enemy! Don't trade out of fear or greed. Stick to your plan! 🧠",
+    question: "What's a trader's biggest enemy?",
+    options: ["The market", "Emotions", "Other traders"],
+    answer: 1
+  }
+];
+
+let unlockedLevel = parseInt(localStorage.getItem("tradeUnlocked") || "0");
+
+function openTradeAcademy() {
+  document.getElementById("tradeAcademy").classList.remove("ta-hidden");
+  showLevels();
+}
+
+function closeTradeAcademy() {
+  document.getElementById("tradeAcademy").classList.add("ta-hidden");
+}
+
+function showLevels() {
+  let html = "";
+  tradeLevels.forEach((lvl, i) => {
+    const locked = i > unlockedLevel;
+    html += `
+      <div class="ta-level">
+        <span>${locked ? "🔒" : "✅"} ${lvl.title}</span>
+        <button onclick="startLesson(${i})" ${locked ? "disabled" : ""}>
+          ${locked ? "Locked" : "Start"}
+        </button>
+      </div>`;
+  });
+  document.getElementById("ta-content").innerHTML = html;
+}
+
+function startLesson(i) {
+  const lvl = tradeLevels[i];
+  document.getElementById("ta-content").innerHTML = `
+    <div class="ta-lesson">
+      <h3>${lvl.title}</h3>
+      <p>${lvl.lesson}</p>
+      <button onclick="showQuiz(${i})" style="background:#00e6a8;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-weight:bold;">Take Quiz ➜</button>
+    </div>`;
+}
+
+function showQuiz(i) {
+  const lvl = tradeLevels[i];
+  let html = `<div class="ta-quiz"><h3>${lvl.question}</h3>`;
+  lvl.options.forEach((opt, idx) => {
+    html += `<button onclick="checkAnswer(${i},${idx})">${opt}</button>`;
+  });
+  html += `</div>`;
+  document.getElementById("ta-content").innerHTML = html;
+}
+
+function checkAnswer(i, choice) {
+  const lvl = tradeLevels[i];
+  if (choice === lvl.answer) {
+    if (i === unlockedLevel && unlockedLevel < tradeLevels.length) {
+      unlockedLevel++;
+      localStorage.setItem("tradeUnlocked", unlockedLevel);
+    }
+    alert("✅ Correct! Level unlocked!");
+  } else {
+    alert("❌ Wrong! Try again.");
+  }
+  showLevels();
+}
 </body>
 </html>
