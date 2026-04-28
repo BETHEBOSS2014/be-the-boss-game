@@ -921,6 +921,70 @@ to{height:var(--h,10px)}}
   .setup-block{margin-bottom:.75rem;}
   .narrator{display:none;}
   .trail{display:none;}
+}/* FORCE TRADING LAYOUT */
+
+.trading-layout {
+  display: flex !important;
+  flex-direction: row !important;
+  height: 100vh;
+  width: 100%;
+}
+
+.chart-section {
+  flex: 3 !important;
+  padding: 20px;
+}
+
+.side-panel {
+  flex: 1 !important;
+  background: #121c2f;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.buy {
+  background: #00c853;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  color: white;
+}
+
+.sell {
+  background: #d50000;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  color: white;
+}
+
+.wait {
+  background: #ffab00;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  color: black;
+}
+
+.submit {
+  margin-top: 20px;
+  padding: 15px;
+  background: #1e88e5;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  color: white;
 }
 </style>
 </head>
